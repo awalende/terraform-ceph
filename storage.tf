@@ -3,5 +3,3 @@ resource "openstack_blockstorage_volume_v3" "osd" {
   size        = 100
   count = "12"
 }
-
-

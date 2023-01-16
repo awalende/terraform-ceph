@@ -11,6 +11,11 @@ resource "openstack_compute_instance_v2" "gateway" {
   }
 }
 
+resource "openstack_compute_floatingip_associate_v2" "myip" {
+  floating_ip = openstack_networking_floatingip_v2.gateway_floating_ip.address
+  instance_id = openstack_compute_instance_v2.gateway.id
+}
+
 resource "openstack_compute_instance_v2" "mon" {
   name            = "mon${count.index}"
   image_id        = "0e880e9c-10a2-4c17-a52b-bac4eca50745"
@@ -36,7 +41,6 @@ resource "openstack_compute_instance_v2" "osd" {
   flavor_id       = "8d10482f-2bc5-4394-ba98-f7dc6050a05a"
   key_pair        = "os-bibi"
   security_groups = ["default"]
-
   count = "6"
 
   network {
