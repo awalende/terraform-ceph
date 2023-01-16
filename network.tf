@@ -45,6 +45,7 @@ resource "openstack_networking_router_interface_v2" "router_interface_1" {
   subnet_id = openstack_networking_subnet_v2.management_subnet.id
 }
 
+
 resource "openstack_networking_floatingip_v2" "gateway_floating_ip" {
   pool = "external"
 }

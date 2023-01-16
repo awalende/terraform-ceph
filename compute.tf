@@ -16,13 +16,21 @@ resource "openstack_compute_floatingip_associate_v2" "myip" {
   instance_id = openstack_compute_instance_v2.gateway.id
 }
 
+# Wait a little before spawning instances, network stuff needs to settle
+resource "time_sleep" "wait_10_seconds" {
+  create_duration = "10s"
+}
+
 resource "openstack_compute_instance_v2" "mon" {
   name            = "mon${count.index}"
   image_id        = "0e880e9c-10a2-4c17-a52b-bac4eca50745"
   flavor_id       = "7a876e27-28f2-41e5-9e31-d09386d067a8"
   key_pair        = "os-bibi"
   security_groups = ["default"]
-  count = "3"
+  count = var.mon_count
+  depends_on = [
+    time_sleep.wait_10_seconds
+  ]
 
   network {
     name = openstack_networking_network_v2.my_network.name
@@ -41,7 +49,10 @@ resource "openstack_compute_instance_v2" "osd" {
   flavor_id       = "8d10482f-2bc5-4394-ba98-f7dc6050a05a"
   key_pair        = "os-bibi"
   security_groups = ["default"]
-  count = "6"
+  count = var.osd_count
+  depends_on = [
+    time_sleep.wait_10_seconds
+  ]
 
   network {
     name = openstack_networking_network_v2.my_network.name
