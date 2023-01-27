@@ -1,8 +1,8 @@
 resource "openstack_compute_instance_v2" "gateway" {
   name            = "gateway"
-  image_id        = "0e880e9c-10a2-4c17-a52b-bac4eca50745"
-  flavor_id       = "7a876e27-28f2-41e5-9e31-d09386d067a8"
-  key_pair        = "os-bibi"
+  image_id        = var.os_image_id
+  flavor_id       = var.os_flavor_id
+  key_pair        = var.os_keypair_name
   security_groups = ["default"]
 
   network {
@@ -23,9 +23,9 @@ resource "time_sleep" "wait_10_seconds" {
 
 resource "openstack_compute_instance_v2" "mon" {
   name            = "mon${count.index}"
-  image_id        = "0e880e9c-10a2-4c17-a52b-bac4eca50745"
-  flavor_id       = "7a876e27-28f2-41e5-9e31-d09386d067a8"
-  key_pair        = "os-bibi"
+  image_id        = var.os_image_id
+  flavor_id       = var.os_flavor_id
+  key_pair        = var.os_keypair_name
   security_groups = ["default"]
   count = var.mon_count
   depends_on = [
@@ -45,9 +45,9 @@ resource "openstack_compute_instance_v2" "mon" {
 
 resource "openstack_compute_instance_v2" "osd" {
   name            = "osd${count.index}"
-  image_id        = "0e880e9c-10a2-4c17-a52b-bac4eca50745"
-  flavor_id       = "8d10482f-2bc5-4394-ba98-f7dc6050a05a"
-  key_pair        = "os-bibi"
+  image_id        = var.os_image_id
+  flavor_id       = var.os_flavor_id
+  key_pair        = var.os_keypair_name
   security_groups = ["default"]
   count = var.osd_count
   depends_on = [

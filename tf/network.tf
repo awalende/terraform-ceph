@@ -37,7 +37,7 @@ resource "openstack_compute_secgroup_v2" "secgroup_management" {
 
 resource "openstack_networking_router_v2" "main_router" {
   name                = "main_router"
-  external_network_id = "f8f2b7e2-9113-4f3c-a072-38e87126a123"
+  external_network_id = var.os_external_network_id
 }
 
 resource "openstack_networking_router_interface_v2" "router_interface_1" {
@@ -47,5 +47,5 @@ resource "openstack_networking_router_interface_v2" "router_interface_1" {
 
 
 resource "openstack_networking_floatingip_v2" "gateway_floating_ip" {
-  pool = "external"
+  pool = var.os_floatingip_pool
 }
